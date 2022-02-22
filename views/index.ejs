@@ -1,0 +1,65 @@
+<%- include('htmlhead') %>
+
+<body>
+      <%- include('components/header') %>
+      <div class="row justify-content-center">
+        <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+    
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
+                    <p class="mt-4">
+                        Painting is both a tranformative and disruptive artform. 
+                        Throughout history, artist have used painting to express 
+                        meaning and communicate emotion. And, through painting,
+                        humans have come to understand other mediums of art better- such as film, 
+                        music, performance arts, and more. 
+                    </p>
+                    <p class="mt-4">
+                        For any art lover, the moment we connect with a meaningful work of art can 
+                        hold a special place in our heart. This is where we can 
+                        share those experiences 
+                    </p>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+     
+    
+</body>
+<script>
+      const getAllPaintingsURL = "http://localhost:3000/paintings/getallpaintings";
+
+      $(document).ready(function(){
+        // getAllPaintings();
+      })
+
+     function getAllPaintings(){
+        const content = $("#artSlide");
+        content.empty();
+        fetch(getAllPaintingsURL)
+        .then(response=> response.json())
+        .then(data => {
+            console.log(data);
+
+            for(let i = 0; i < data.length; i++){
+            content.append(
+                `
+                      <div class="carousel-item active">
+                        <img src="${data[i].img}" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                          <h5>
+                            <a href="http://localhost:3000/paintings/getPaintingView/${data[i].id}" style="text-decoration:none; color:black;">
+                                ${data[i].painting_name}
+                            </a>
+                          </h5>
+                          <p>${data[i].first_name + " " + data[i].last_name}</p>
+                        </div>
+                      </div>
+                `)
+            }
+        }) 
+    }
+</script>
+</html>

@@ -1,0 +1,29 @@
+
+
+    <%- include('htmlhead') %>
+    <%- include('./components/navForLogin') %>
+    <body>
+    <div class="container" align="center">
+
+        <div class="row mt-4">
+            <form action="/login" method="post" class="mt-4">
+            <div class="col-10 col-sm-8 col-md-8 col-lg-6 col-xl-4 mt-4">
+                <h1 class="display-5">Login</h1>
+                <p class="lead mt-4"><small>Login or create an account to continue</small></p>
+                <div class="mb-3 mt-2">
+                    <label for="username" class="form-label mt-4">User Name</label>
+                    <input class="form-control" id="username" name="username" placeholder="Username">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                </div>
+                <button class="btn btn-dark mt-4" type="submit">Login</button>
+                <p class="mt-4"><small>No account yet? <a href="http://localhost:3000/createaccount">Create your account</a></small></p>
+            </div>
+        </form>
+        </div>
+
+    </div>
+</body>
+</html>

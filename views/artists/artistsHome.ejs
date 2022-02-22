@@ -1,0 +1,254 @@
+<%- include('../htmlhead') %>
+<body>
+    <%- include('../components/nav') %>
+
+    <div class=" row justify-content-center">
+        <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-md-xl">
+                   
+                <h1 class="h1 mt-4">Artists</h1>
+                    <p class="lead mt-4">Greats artists across time</p>
+
+                    
+                    <div class="d-flex justify-content-end container mt-4">
+                    
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addArtistForm">
+                        <i class="fa fa-plus px-1 text-warning"></i></a>Add Artist
+                    </button>
+                </div>
+        
+                <div class="row" id="content">
+                    
+                </div>
+        
+        </div>
+    </div>
+  <!-- add artist Modal -->
+  <div class="modal fade" id="addArtistForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="title">Add Artist</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <form id="addArtist">
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" ">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" ">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Art Movement</label>
+                                <input type="text" class="form-control" id="artMovement" ">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Biography</label>
+                                <textarea class="form-control" id="bio" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Artist Image Url</label>
+                                <textarea class="form-control" id="img" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-warning">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+     <!-- update painter Modal -->
+     <div class="modal fade" id="updateArtistForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h5 class="modal-title w-100" id="title">Update Artist</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="updateArtist">
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
+                        <input type="hidden" class="form-control" id="idForUpdate"">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstNameForUpdate"">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastNameForUpdate"">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Art Movement</label>
+                            <input type="text" class="form-control" id="artMovementForUpdate"">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Biography</label>
+                            <textarea class="form-control" id="bioForUpdate" rows="3"></textarea>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Artist Image URL</label>
+                            <textarea class="form-control" id="imgForUpdate" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-warning">Save</button>
+            </div>
+        </form>
+          </div>
+        </div>
+      </div>
+
+</body>
+
+<script>
+    const getAllArtistURL = "http://localhost:3000/artists/getAllArtists";
+    const getArtistByIdURL = "http://localhost:3000/artists/getArtist";
+    const addArtistURL ="http://localhost:3000/artists/addArtist";
+    const updateArtistURL = "http://localhost:3000/artists/updateArtist";
+    // const deletePaintingURL ="http://localhost:3000/artists/deletepainting";
+
+    $(document).ready(function(){
+
+        getAllArtists();
+
+        $("#addArtist").submit(function(e){
+            e.preventDefault();
+            let firstName = $("#firstName").val();
+            let lastName = $("#lastName").val();
+            let artMovement = $("#artMovement").val();
+            let bio = $("#bio").val();
+            let img = $("#img").val();
+            let requestBody = ({firstName: firstName, lastName: lastName, artMovement:artMovement, bio:bio, img: img});
+
+            addArtist(addArtistURL, requestBody)
+            .then(data =>{
+                console.log(data);
+                $('#addArtistForm').modal('hide');
+                getAllArtists();
+                $('#addArtist').trigger("reset");
+            })
+        })
+
+        $("#updateArtist").submit(function(e){
+            e.preventDefault();
+            let idForUpdate = $("#idForUpdate").val();
+            let firstNameForUpdate = $("#firstNameForUpdate").val();
+            let lastNameForUpdate = $("#lastNameForUpdate").val();
+            let artMovementForUpdate = $("#artMovementForUpdate").val();
+            let bioForUpdate = $("#bioForUpdate").val();
+            let imgForUpdate = $("#imgForUpdate").val();
+            let requestBody = {firstName: firstNameForUpdate, lastName: lastNameForUpdate, artMovement: artMovementForUpdate, bio:bioForUpdate, img:imgForUpdate};
+            
+            fetch(`${updateArtistURL}/${idForUpdate}`,
+            {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestBody)
+
+            })
+            .then(response=> response.json())
+            .then(data =>{
+              console.log(data)
+              $('#updateArtistForm').modal('hide');
+                getAllArtists();
+          })
+        })
+    })
+
+        function getAllArtists(){
+    const content = $("#content");
+    content.empty();
+    fetch(getAllArtistURL)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            
+            for(let i = 0; i < data.length; i++){
+
+            
+            content.append(
+                `
+                <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-4 px-4" align="center">
+                    <div class="card" style="height: 400px;">
+                      
+                        <div class="d-flex align-items-center justify-content-center" style="overflow:hidden; height:60%;">
+                        <img src="${data[i].img}" style="max-height: 100%; max-width:90%;" class="card-img-top" alt="...">
+                       
+                        </div>
+                        <div class="card-body" style="height: 25%; overflow:hidden">
+                            <h5 class="card-title">
+                                <a href="http://localhost:3000/artists/getArtistView/${data[i].id}" style="text-decoration:none; color:black;">
+                                ${data[i].first_name + " " + data[i].last_name}
+                                </a>
+                            </h5>
+                            <p class="card-text">${data[i].art_movement}</p>
+                            </div>
+                            <div class="card-body" style="height: 15%; overflow:hidden">
+                            
+                            <div class="row justify-content-center">
+                                <div class="col-xs-4 col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                    <button onclick="populateUpdateForm(${data[i].id})" class="btn" data-bs-toggle="modal" data-bs-target="#updateArtistForm"><i class="fa fa-pencil dark"></i></a>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `
+                
+                )
+            }
+            
+        })
+ }
+
+ async function addArtist(url, data){
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return response.json();
+    }
+
+    async function populateUpdateForm(id){
+        const response = await fetch(`${getArtistByIdURL}/${id}`)
+        .then(response => {return response.json()})
+        console.log(response);
+        let idForUpdate = $("#idForUpdate");
+        let firstNameForUpdate = $("#firstNameForUpdate");
+        let lastNameForUpdate = $("#lastNameForUpdate");
+        let artMovementForUpdate = $("#artMovementForUpdate");
+        let bioForUpdate = $("#bioForUpdate");
+        let imgForUpdate = $("#imgForUpdate");
+        idForUpdate.val(response[0].id);
+        firstNameForUpdate.val(response[0].first_name);
+        lastNameForUpdate.val(response[0].last_name);
+        artMovementForUpdate.val(response[0].art_movement);
+        bioForUpdate.val(response[0].bio);
+        imgForUpdate.val(response[0].img);
+        
+    }
+  
+</script>
+ </html>
+     

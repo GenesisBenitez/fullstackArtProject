@@ -1,0 +1,275 @@
+<%- include('../htmlhead') %>
+
+<body>
+<%- include('../components/paintingsHeader') %>
+<div class="row justify-content-center">
+    <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
+                <p class="mt-4">
+                    Painting is both a tranformative and disruptive artform. 
+                    Throughout history, artist have used painting to express 
+                    meaning and communicate emotion. And, through painting,
+                    humans have come to understand other mediums of art better- such as film, 
+                    music, performance arts, and more. 
+                </p>
+                <p class="mt-4">
+                    For any art lover, the moment we connect with a meaningful work of art can 
+                    hold a special place in our heart. We invite you to share those experiences here!
+                </p>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end container mt-4">
+            <button type="button" class="btn btn-dark mt-4" data-bs-toggle="modal" data-bs-target="#addPaintingForm">
+                <i class="fa fa-plus px-1 text-warning"></i>Add Painting            
+            </button>
+        </div>
+
+        <div class="row mt-4" id="content">
+
+        </div>
+    </div>
+</div>
+    <!-- Add Painting Modal -->
+    <div class="modal fade" id="addPaintingForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header text-center">
+            <h5 class="modal-title w-100" id="exampleModalLabel">Add Painting</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="addPainting">
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Painting name</label>
+                    <input type="text" class="form-control" id="paintingName" >
+                </div>
+                <label for="exampleFormControlInput1" class="form-label">Painter name</label>
+                <div class="input-group mb-3">
+                    <select class="form-select"  id="painterId">
+                        <option disabled selected>Choose...</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Painting Image URL</label>
+                    <textarea class="form-control" id="img" rows="3"></textarea>
+                </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-warning">Save</button>
+            </div>
+        </form>
+
+        </div>
+    </div>
+    </div>
+    <!-- Update Painting Modal -->
+    <div class="modal fade" id="updatePaintingForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h5 class="modal-title w-100" id="exampleModalLabel">Update Painting</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="updatePainting">
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
+                    <input type="hidden" class="form-control"  id="idForUpdate">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Painting name</label>
+                        <input type="text" class="form-control"  id="paintingNameForUpdate">
+                    </div>
+                    <label for="exampleFormControlInput1" class="form-label">Painter name</label>
+                    <div class="input-group mb-3">
+                        <select class="form-select"  id="painterIdForUpdate">
+                            <option disabled selected>Choose...</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <textarea class="form-control" id="descriptionForUpdate" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Painting Image URL</label>
+                        <textarea class="form-control" id="imgForUpdate" rows="3"></textarea>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-warning">Save</button>
+                </div>
+            </form>
+
+          </div>
+        </div>
+    </div>
+
+
+</body>
+<script>
+    const getAllPaintingsURL = "http://localhost:3000/paintings/getallpaintings";
+    const getPaintingByIdURL = "http://localhost:3000/paintings/getPainting";
+    const addPaintingURL = "http://localhost:3000/paintings/addPainting";
+    const updatePaintingURL = "http://localhost:3000/paintings/updatepainting";
+    const deletePaintingURL = "http://localhost:3000/paintings/deletepainting";
+    const getAllArtistsURL = "http://localhost:3000/artists/getAllArtists";
+
+    $(document).ready(function(){
+        getAllPaintings();
+        getAllArtists();
+        $("#addPainting").submit(function(e){
+            e.preventDefault();
+            let paintingName = $("#paintingName").val();
+            let painterId = $("#painterId").val();
+            let description = $("#description").val();
+            let img = $("#img").val();
+            let requestBody = {paintingName: paintingName, painterId: painterId, description: description, img: img};
+
+            addPainting(addPaintingURL, requestBody)
+            .then(data=>{
+                console.log(data);
+                $('#addPaintingForm').modal('hide');
+                getAllPaintings();
+                $('#addPainting').trigger("reset");
+            })
+        })
+
+        $("#updatePainting").submit(function(e){
+            e.preventDefault();
+            let idForUpdate = $("#idForUpdate").val();
+            let paintingNameForUpdate = $("#paintingNameForUpdate").val();
+            let painterIdForUpdate = $("#painterIdForUpdate").val();
+            let descriptionForUpdate = $("#descriptionForUpdate").val();
+            let imgForUpdate = $("#imgForUpdate").val();
+            let requestBody = {paintingName: paintingNameForUpdate, painterId: painterIdForUpdate, description: descriptionForUpdate, img: imgForUpdate };
+            fetch(`${updatePaintingURL}/${idForUpdate}`,{
+                method: 'PUT',
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                console.log(data);
+                $('#updatePaintingForm').modal('hide');
+                getAllPaintings();
+            })
+        })
+    })
+
+    function getAllPaintings(){
+        const content = $("#content");
+        content.empty();
+        fetch(getAllPaintingsURL)
+        .then(response=> response.json())
+        .then(data => {
+            console.log(data);
+
+            for(let i = 0; i < data.length; i++){
+            content.append(
+                `
+                <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-4 px-4" align="center">
+                    <div class="card" style="height: 400px;">
+                        <div class="d-flex align-items-center justify-content-center" style="height: 60%; overflow:hidden; background-color: background-color: rgb(0, 0, 0, .04);">
+                        <img src="${data[i].img}" style="max-height:100%; max-width:90%; width: 80%;" class="card-img-top" alt="..." >
+                        </div>
+                        <div class="card-body" style="height: 25%; overflow:hidden;">
+                            <h6 class="card-title" style="word-wrap: break-word; width:100%;">
+                                <a href="http://localhost:3000/paintings/getPaintingView/${data[i].id}" style="text-decoration:none; color:black;">
+                                ${data[i].painting_name}
+                                </a>
+                            </h6>
+                            <p class="card-text">${data[i].first_name + " " + data[i].last_name}</p>
+                        </div>
+                        <div class="card-body" style="height: 15%; overflow:hidden;">
+                            <div class="row justify-content-center">
+                                <div class="col-w-4 col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                    <button onclick="populateUpdateForm(${data[i].id})" class="btn" data-bs-toggle="modal" data-bs-target="#updatePaintingForm"><i class="fa fa-pencil text-dark"></i></button>
+                                </div>
+                                <div class="col-xs-4 col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                    <button onclick="deletePainting(${data[i].id})"  class="btn "><i class="fa fa-trash text-dark"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `)
+            }
+        }) 
+    }
+
+   
+
+    async function deletePainting(id){
+        const response = await fetch(`${deletePaintingURL}/${id}`,{
+            method: "DELETE"
+        })
+        .then(response=> response.json())
+        .then(data=>{
+            console.log(data);
+            getAllPaintings();
+        })
+    }
+
+    async function addPainting(url, data){
+        const response = await fetch(url, {
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return response.json();
+    }
+
+    async function populateUpdateForm(id){
+        const response = await fetch(`${getPaintingByIdURL}/${id}`)
+        .then(response=>{ return response.json()})
+        console.log(response);
+        let idForUpdate = $("#idForUpdate");
+        let paintingNameForUpdate = $("#paintingNameForUpdate");
+        let painterIdForUpdate = $("#painterIdForUpdate");
+        let imgForUpdate = $("#imgForUpdate");
+        idForUpdate.val(response[0].id);
+        paintingNameForUpdate.val(response[0].painting_name);
+        painterIdForUpdate.val(response[0].painter_id);
+        imgForUpdate.val(response[0].img);
+    }
+
+    function getAllArtists(){
+        let selectForAddPaintingsForm = $("#painterId");
+        let selectForUpdatePaintingsForm = $("#painterIdForUpdate");
+
+        fetch(getAllArtistsURL)
+        .then(response=> response.json())
+        .then(data=> {
+            for(let i = 0; i< data.length; i++){
+                selectForAddPaintingsForm.append(
+                    `
+                    <option value="${data[i].id}">${data[i].first_name + " " + data[i].last_name}</option>
+                    `
+                )
+                selectForUpdatePaintingsForm.append(
+                    `
+                    <option value="${data[i].id}">${data[i].first_name + " " + data[i].last_name}</option>
+                    `
+                )
+            }
+        });
+    }
+</script>
+</html>

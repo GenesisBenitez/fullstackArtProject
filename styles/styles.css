@@ -1,0 +1,68 @@
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
+.navbar{
+    background-color: rgb(0, 1, 14);
+}
+.header{
+    background-color: rgb(0, 1, 14);
+}
+.header-title{
+    font-family: Palatino, URW Palladio L, serif;
+    font-size: 22px;
+}
+
+
+a{
+    text-decoration: none;
+}
+
+
+.header-image{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://www.metmuseum.org/-/media/images/about-the-met/curatorial-departments/egyptian/dendur-50/dendur50_marquee_2320x940.jpg?sc_lang=en&h=940&w=2320&la=en&hash=E418E1576EC68C5CBFDA824CFAB15B5D");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 400px;
+}
+.header-for-paintings-image{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://upload.wikimedia.org/wikipedia/commons/c/ce/Caravaggio%2C_Michelangelo_Merisi_da_-_The_Calling_of_Saint_Matthew_-_1599-1600_%28hi_res%29.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 400px;
+}
+
+.card{
+    border: none;
+}
+.card:hover{
+    background-color: rgb(0, 0, 0, .04);
+}
+
+.card-title{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    display: inline;
+}
+
+.card-title:hover{
+    border-bottom: solid 3px #ffc107;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, .5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  }
+  

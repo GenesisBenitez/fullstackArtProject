@@ -1,0 +1,133 @@
+<%- include('../htmlhead') %>
+
+<body>
+<%- include('../components/nav') %> 
+
+<div class="row mt-4">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 order-lg-2 order-xl-2 mt-4">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-center" style="height:300px; width: 100%;">
+                <div class="col-lg-10 col-xl-7">
+                <img src="<%= data.img %>" alt="" style="max-width: 100%; max-height: 100%;">
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 order-lg-1 order-xl-1 mt-4">
+        <div class="container">
+            <div class="row justify-content-end">
+                <div class="col-xs-12 col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
+                    <h1 class="display-6"><%= data.first_name + " " + data.last_name %></h1>
+                    
+                    <small class="d-block mt-4">
+                        <%= data.bio %>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid mt-4">
+    
+    <div class="row justify-content-center " >
+        
+        <div class="col-xs-8 col-8 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+           
+            <div class="row justify-content-center mt-4">
+                <div class="col-12 col-sm-12 col-md-11 col-lg-11 col-xl-11">
+                    <small class="fs-5 mt-2"><i class="fa fa-comments px-2"></i><span id="numberOfComments"></span> Comments</small>   
+                </div>
+            </div>
+            <div id="commentSection" class="row mt-4 overflow-scroll" style="height:240px;">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addCommentForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header text-center">
+            <h5 class="modal-title w-100" id="exampleModalLabel">Add Comment</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="addComment">
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Comment</label>
+                            <textarea class="form-control" id="comment" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-warning">Save</button>
+            </div>
+        </form>
+
+        </div>
+    </div>
+</div>
+</body>
+<% var painterId = data.id; %> 
+<% var loggedInUserId = userId; %> 
+
+<script>
+    $(document).ready(function(){
+        var painterId = <%= painterId  %>;
+        var loggedInUserId = <%= loggedInUserId %>
+        getAllCommentsByArtistId(painterId);
+
+
+    })
+
+    function getAllCommentsByArtistId(id){
+        let comments = $("#commentSection");
+        let numberOfComments = $("#numberOfComments");
+        comments.empty();
+        fetch("http://localhost:3000/artists/getAllDetailsByArtistId/" + id)
+        .then(response=> response.json())
+        .then(data => {
+            console.log(data);
+            numberOfComments.html(data.length);
+            for(let i = 0; i < data.length; i++){
+                comments.append(
+                `
+                <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-x-2 mt-4" align="center" >
+                    <i class="fa fa-user-circle-o fa-2x mt-2"></i>
+                </div>
+                <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-x-10 mt-4">
+                    <small class="d-block fw-bold fst-italic">
+                       ${data[i].painting_name} 
+                    </small>
+                    <div class="d-inline px-1">
+                        <small class="fw-bold" style="font-size: 16px;">${data[i].username}</small>
+                    </div>
+                    <div class="d-inline">
+                        <small class="fw-light" style="font-size: 12px;">${convertTime(data[i].created_at)}</small>
+                    </div>
+                    
+                    <small class="d-block">
+                        ${data[i].comment} 
+                    </small>
+                    </div>
+                
+                `)
+            }
+            
+        })
+    }
+    function convertTime(time){
+        var newTime = new Date(time);
+        const realTime = newTime.toLocaleString('en-us', {month: 'numeric', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true})
+        return realTime;
+    }
+
+</script>
+</html> 
