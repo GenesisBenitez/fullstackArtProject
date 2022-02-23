@@ -45,21 +45,21 @@
                     <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Painting name</label>
-                    <input type="text" class="form-control" id="paintingName" >
+                    <input required type="text" class="form-control" id="paintingName" >
                 </div>
                 <label for="exampleFormControlInput1" class="form-label">Painter name</label>
                 <div class="input-group mb-3">
-                    <select class="form-select"  id="painterId">
+                    <select required class="form-select"  id="painterId">
                         <option disabled selected>Choose...</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" rows="3"></textarea>
+                    <textarea required maxlength="1000" class="form-control" id="description" rows="3"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Painting Image URL</label>
-                    <textarea class="form-control" id="img" rows="3"></textarea>
+                    <textarea required maxlength="500" class="form-control" id="img" rows="3"></textarea>
                 </div>
                     </div>
                 </div>
@@ -85,24 +85,24 @@
                 <div class="modal-body">
                     <div class="row justify-content-center">
                         <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
-                    <input type="hidden" class="form-control"  id="idForUpdate">
+                    <input required type="hidden" class="form-control"  id="idForUpdate">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Painting name</label>
-                        <input type="text" class="form-control"  id="paintingNameForUpdate">
+                        <input required type="text" class="form-control"  id="paintingNameForUpdate">
                     </div>
                     <label for="exampleFormControlInput1" class="form-label">Painter name</label>
                     <div class="input-group mb-3">
-                        <select class="form-select"  id="painterIdForUpdate">
+                        <select required class="form-select"  id="painterIdForUpdate">
                             <option disabled selected>Choose...</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" id="descriptionForUpdate" rows="3"></textarea>
+                        <textarea required class="form-control" maxlength="1000" id="descriptionForUpdate" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlTextarea1" class="form-label">Painting Image URL</label>
-                        <textarea class="form-control" id="imgForUpdate" rows="3"></textarea>
+                        <textarea required class="form-control" maxlength="500" id="imgForUpdate" rows="3"></textarea>
                     </div>
                         </div>
                     </div>
@@ -242,10 +242,12 @@
         console.log(response);
         let idForUpdate = $("#idForUpdate");
         let paintingNameForUpdate = $("#paintingNameForUpdate");
+        let descriptionForUpdate = $("#descriptionForUpdate");
         let painterIdForUpdate = $("#painterIdForUpdate");
         let imgForUpdate = $("#imgForUpdate");
         idForUpdate.val(response[0].id);
         paintingNameForUpdate.val(response[0].painting_name);
+        descriptionForUpdate.val(response[0].description);
         painterIdForUpdate.val(response[0].painter_id);
         imgForUpdate.val(response[0].img);
     }

@@ -36,23 +36,35 @@
                         <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" ">
+                                <input required type="text" class="form-control" id="firstName" ">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" ">
+                                <input required type="text" class="form-control" id="lastName" ">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Art Movement</label>
-                                <input type="text" class="form-control" id="artMovement" ">
+                                <input required maxlength="100" type="text" class="form-control" id="artMovement" >
+                                <!-- <label for="exampleFormControlInput1" class="form-label">Art Movement</label>
+                                <select required class="form-select"  id="artMovementForUpdate">
+                                    <option value="Impressionism">Impressionism</option>
+                                    <option value="Baroque">Baroque</option>
+                                    <option value="Fauvism">Fauvism</option>
+                                    <option value="Renaissance">Renaissance</option>
+                                    <option value="Modern Art">Modern Art</option>
+                                    <option value="Expressionism">Expressionism</option>
+                                    <option value="Post-impressionism">Post-impressionism</option>
+                                    <option value="Neoclassicism">Neoclassicism</option>
+        
+                                </select> -->
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlTextarea1" class="form-label">Biography</label>
-                                <textarea class="form-control" id="bio" rows="3"></textarea>
+                                <textarea required maxlength="1000" class="form-control" id="bio" rows="3"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlTextarea1" class="form-label">Artist Image Url</label>
-                                <textarea class="form-control" id="img" rows="3"></textarea>
+                                <textarea required maxlength="500" class="form-control" id="img" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -82,24 +94,24 @@
                         <input type="hidden" class="form-control" id="idForUpdate"">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstNameForUpdate"">
+                            <input required type="text" class="form-control" id="firstNameForUpdate"">
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastNameForUpdate"">
+                            <input required type="text" class="form-control" id="lastNameForUpdate"">
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Art Movement</label>
-                            <input type="text" class="form-control" id="artMovementForUpdate"">
+                            <input type="text" class="form-control" id="artMovementForUpdate">
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlTextarea1" class="form-label">Biography</label>
-                            <textarea class="form-control" id="bioForUpdate" rows="3"></textarea>
+                            <textarea required maxlength="1000" class="form-control" id="bioForUpdate" rows="3"></textarea>
                         </div>
                     
                         <div class="mb-3">
                             <label for="exampleFormControlTextarea1" class="form-label">Artist Image URL</label>
-                            <textarea class="form-control" id="imgForUpdate" rows="3"></textarea>
+                            <textarea required maxlength="500" class="form-control" id="imgForUpdate" rows="3"></textarea>
                         </div>
                     </div>
                 </div>
@@ -172,7 +184,7 @@
         })
     })
 
-        function getAllArtists(){
+    function getAllArtists(){
     const content = $("#content");
     content.empty();
     fetch(getAllArtistURL)
@@ -182,7 +194,6 @@
             
             for(let i = 0; i < data.length; i++){
 
-            
             content.append(
                 `
                 <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-4 px-4" align="center">
@@ -230,7 +241,7 @@
         return response.json();
     }
 
-    async function populateUpdateForm(id){
+async function populateUpdateForm(id){
         const response = await fetch(`${getArtistByIdURL}/${id}`)
         .then(response => {return response.json()})
         console.log(response);

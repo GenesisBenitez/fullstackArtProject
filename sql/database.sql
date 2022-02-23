@@ -82,20 +82,13 @@ update paintings
 set img= 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/1024px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg' where id = 1;
 
 
-
-update paintings 
-set img= 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Caravaggio_-_La_Deposizione_di_Cristo.jpg/540px-Caravaggio_-_La_Deposizione_di_Cristo.jpg' where id = 2;
-
-update paintings
-set painting_name = 'The Entombment of Christ' where id=2;
-
 alter table painters add img varchar(550);
 
 alter table paintings add description varchar(1000);
 
 alter table painters add bio varchar(1000);
 
-//get all details with painter id
+----get all details with painter id--->
 Select users.username, paintings.painting_name, painters.first_name, painters.last_name, comments.comment
 from comments 
 inner join users on comments.user_id = users.id

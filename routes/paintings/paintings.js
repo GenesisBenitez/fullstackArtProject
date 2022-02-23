@@ -21,7 +21,7 @@ router.get("/getPaintingView/:id", (request,response) =>{
    SELECT paintings.id, paintings.painting_name, paintings.img, paintings.description, painters.id AS painter_id, painters.first_name, painters.last_name
    FROM paintings
    INNER JOIN painters ON paintings.painter_id = painters.id where paintings.id = ?;`, [request.params.id],(err,results) =>{
-       if(err) throw error;
+       if(err) throw err;
        console.log(results);
        response.render("paintings/getPainting", { username: request.session.username, userId:request
         .session.userId, data: results[0]})
@@ -38,7 +38,7 @@ router.get("/getAllPaintings", (request,response) =>{
     SELECT paintings.id, paintings.painting_name, paintings.img, paintings.description, painters.first_name, painters.last_name
     FROM paintings
     INNER JOIN painters ON paintings.painter_id = painters.id;`,(err,results) =>{
-        if(err) throw error;
+        if(err) throw err;
         response.send(results);
     })
  }else{
@@ -50,7 +50,7 @@ router.get("/getAllPaintings", (request,response) =>{
 router.get("/getPainting/:id", (request,response) =>{
      if(request.session.loggedin){
     db.query("select * from paintings where id = ?", [request.params.id],(err,results) =>{
-        if(err) throw error;
+        if(err) throw err;
         response.statusCode = 200;
         response.send(results);
     })
@@ -65,7 +65,7 @@ router.post("/addPainting", (request,response) =>{
      if(request.session.loggedin){
     db.query(
     "insert into paintings(painting_name,painter_id, description, img) values(?,?,?,?)", [request.body.paintingName, request.body.painterId, request.body.description, request.body.img],(err,results) =>{
-        if(err) throw error;
+        if(err) throw err;
         response.send({status: "success"});
     })
  }else{
@@ -78,7 +78,7 @@ router.put("/updatepainting/:id", (request,response) =>{
      if(request.session.loggedin){
     db.query(
     "update paintings set painting_name = ? ,painter_id = ?, description=?, img=? where id = ?", [request.body.paintingName, request.body.painterId, request.body.description, request.body.img, request.params.id],(err,results) =>{
-        if(err) throw error;
+        if(err) throw err;
         response.send({status: "success"})
     })
  }else{
@@ -91,7 +91,7 @@ router.delete("/deletepainting/:id", (request,response) =>{
      if(request.session.loggedin){
     db.query(
     "delete from paintings where id = ?", [request.params.id],(err,results) =>{
-        if(err) throw error;
+        if(err) throw err;
         response.statusCode = 200;
         response.send({status: "success"});
     })

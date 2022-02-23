@@ -60,7 +60,7 @@
                     <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
                         <div class="mb-3">
                             <label for="exampleFormControlTextarea1" class="form-label">Comment</label>
-                            <textarea class="form-control" id="comment" rows="3"></textarea>
+                            <textarea required maxlength="250" class="form-control" id="comment" rows="3"></textarea>
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,9 @@
                 </div>
                 <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-x-10 mt-4">
                     <small class="d-block fw-bold fst-italic">
+                        <a href="http://localhost:3000/paintings/getPaintingView/${data[i].painting_id}" style="text-decoration:none; color:black;">
                        ${data[i].painting_name} 
+                       </a>
                     </small>
                     <div class="d-inline px-1">
                         <small class="fw-bold" style="font-size: 16px;">${data[i].username}</small>
